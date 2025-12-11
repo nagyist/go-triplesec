@@ -248,7 +248,9 @@ type testVectors struct {
 func TestSpec(t *testing.T) {
 	for _, version := range []Version{3, 4} {
 		handle, _ := os.Open(fmt.Sprintf("spec/triplesec_v%d.json", version))
-		defer handle.Close()
+		defer func() {
+			_ = handle.Close()
+		}()
 
 		var vs testVectors
 		dec := json.NewDecoder(handle)
